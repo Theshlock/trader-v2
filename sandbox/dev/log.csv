@@ -1,0 +1,22 @@
+timestamp,strategy,dataset,performance
+1642896035.9571042,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1642896042.8969831,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1642896046.5981078,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1642896170.6524,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1642903444.2806559,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644230003.4400718,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644231185.355925,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644231686.481945,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644231698.8409002,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644278321.9353862,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644278493.23624,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100, tp_val: 200}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644278559.0560799,{name: double_top_double_bottom, parameters: {close_sens: 0.001, sl_val: 100.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.00047528649958087163
+1644278565.6073751,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 100.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.000330477152867649
+1644278570.991178,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,6237.856342299477
+1644279954.059403,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,6237.856342299477
+1644279957.61303,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,6237.856342299477
+1644280385.247051,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},None,6237.856342299477
+1644280458.557816,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,6237.856342299477
+1644280514.183903,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.032169282493638464
+1644280526.620343,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,6237.856342299477
+1644280780.802203,{name: double_top_double_bottom, parameters: {close_sens: 0.002, sl_val: 1000.0, tp_val: 200.0}},../Data/Datasets/Binance_BTCUSDT_1h.csv,0.032169282493638464
