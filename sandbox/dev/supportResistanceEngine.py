@@ -56,8 +56,8 @@ if __name__ == "__main__":
  
     """Output section"""
     print(df)
-    print(df.index)
-    print(df.iloc[-1:].index)
+    # print(df.index)
+    print(df.index[-1:].to_pydatetime()[0])
 
     """Matplotlib config"""
     fig = plt.figure()
@@ -70,19 +70,24 @@ if __name__ == "__main__":
     ax[0].plot(df.index, df['close'], label = 'close')
     
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Year'].supportResistanceLevels.items():
+        print(f"{SRLevel.startTime+(SRLevel.intervalLength*1)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*1), df.index[-1:].to_pydatetime()[0])}")
         ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*1), color='red', label='Yearly')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Month'].supportResistanceLevels.items():
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*8), color='orange', label='Monthly')
+        print(f"{SRLevel.startTime+(SRLevel.intervalLength*8)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*8), df.index[-1:].to_pydatetime()[0])}")
+        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*8),df.index[-1:].to_pydatetime()[0]), color='orange', label='Monthly')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Week'].supportResistanceLevels.items():
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*16), color='yellow', label='Weekly')
+        print(f"{SRLevel.startTime+(SRLevel.intervalLength*16)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*16), df.index[-1:].to_pydatetime()[0])}")
+        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*16),df.index[-1:].to_pydatetime()[0]), color='yellow', label='Weekly')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Day'].supportResistanceLevels.items():
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*64), color='green', label='Daily')
+        print(f"{SRLevel.startTime+(SRLevel.intervalLength*64)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*64), df.index[-1:].to_pydatetime()[0])}")
+        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*64),df.index[-1:].to_pydatetime()[0]), color='green', label='Daily')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Hour'].supportResistanceLevels.items():
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*512), color='blue', label='Hourly')
+        print(f"{SRLevel.startTime+(SRLevel.intervalLength*512)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*512), df.index[-1:].to_pydatetime()[0])}")
+        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*512),df.index[-1:].to_pydatetime()[0]), color='blue', label='Hourly')
 
 
     plt.xlabel("time")
