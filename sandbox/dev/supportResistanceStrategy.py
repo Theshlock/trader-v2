@@ -9,15 +9,23 @@ class supportResistanceStrategy(object):
         self.period = period
         self.timeframe = None
 
-    def levelsOHLCFeeder(self, time, open, high, low, close):
-        if low < self.timeframe.low:
-            self.timeframe.low = low
-        if high > self.timeframe.high:
-            self.timeframe.high = high
-        if time >= self.timeframe.endTime: # interval concluded, calc levels, create next
-            self.timeframe.close = close
-            if self.timeframe.startTime + self.timeframe.intervalLength: # Check that it was a full interval
-                self.supportResistanceLevels.addTimeframe(self.timeframe)
-            self.timeframe = timeframe(time, self.period, close) 
+    def timeframeIntialiser(self, time, priceOpen, priceHigh, priceLow, priceClose):
+        print('initialised')
+        self.timeframe = timeframe(time, self.period, priceOpen, priceHigh, priceLow, priceClose)
+        print(self.timeframe.__dict__)
+
+    def levelsOHLCFeeder(self, time, priceOpen, priceHigh, priceLow, priceClose):
+        if self.timeframe == None:
+            self.timeframeIntialiser(time, priceOpen, priceHigh, priceLow, priceClose)
+        else:
+            if priceLow < self.timeframe.priceLow:
+                self.timeframe.priceLow = priceLow
+            if priceHigh > self.timeframe.priceHigh:
+                self.timeframe.priceHigh = priceHigh
+            if time >= self.timeframe.endTime: # interval concluded, calc levels, create next
+                self.timeframe.priceClose = priceClose
+                if self.timeframe.startTime + self.timeframe.intervalLength: # Check that it was a full interval
+                    self.supportResistanceLevelsObjects.levelFeeder(self.timeframe)
+                self.timeframe = timeframe(time, self.period, priceClose, priceClose, priceClose, None) 
 
 
