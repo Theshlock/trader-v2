@@ -16,6 +16,8 @@ class supportResistanceStrategy(object):
             self.timeframe.high = high
         if time >= self.timeframe.endTime: # interval concluded, calc levels, create next
             self.timeframe.close = close
-            self.supportResistanceLevels.addTimeframe(self.timeframe)
+            if self.timeframe.startTime + self.timeframe.period:
+                self.supportResistanceLevels.addTimeframe(self.timeframe)
             self.timeframe = timeframe(time, time + self.period, close, close, close, None)
-        
+
+

@@ -2,17 +2,17 @@
 import pandas as pd
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from timeframe import timeframe
+from timeframes import *
 from supportResistanceStrategy import supportResistanceStrategy
 
 
 
 periods = {
-# "1_Year": relativedelta(years = 1),
-# "1_Month": relativedelta(months = 1), 
-# "1_Week": relativedelta(weeks = 1), 
-# "1_Day": relativedelta(days = 1), 
-"1_Hour": relativedelta(hours = 1)
+"1_Year": relativedelta(years=+1),
+"1_Month": relativedelta(months=+1), 
+"1_Week": relativedelta(days=+7), 
+"1_Day": relativedelta(days=+1), 
+"1_Hour": relativedelta(hours=+1)
 } # periods contain datetimes and instructions on when they start
 
 # When initialising objects, make sure they are aligned to their interval
@@ -25,8 +25,10 @@ class supportResistanceEngine(object):
             print(key, val)
             self.supportResistanceStrategies[key] = supportResistanceStrategy()
         self.performance = 1
+    
+    def firstDataPoint(self, time, open, high, low, close):
 
-    def feed(self, time, open, high, low, close):
+    def feedData(self, time, open, high, low, close):
         for strategy in self.supportResistanceStrategies:
             strategy.feedData(time, open, high, low, close)
 
