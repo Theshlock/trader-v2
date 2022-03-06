@@ -1,7 +1,7 @@
 # Samuel Lockton ~ lockton.sam@gmail.com ~ 2022
 
 class supportResistanceLevels(object):
-    """Contains an array of Support/Resistance Levels"""
+    """Contains a dictionary of Support/Resistance Levels"""
     def __init__(self):
         self.supportResistanceLevels = {}
         self.priceBuffer = [None] * 3 # holds and checks prices for reversals
