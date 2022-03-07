@@ -9,11 +9,11 @@ from supportResistanceStrategy import supportResistanceStrategy
 
 
 intervals = {
-"1_Year": relativedelta(years=+1),
+# "1_Year": relativedelta(years=+1),
 "1_Month": relativedelta(months=+1), 
-"1_Week": relativedelta(days=+7), 
-"1_Day": relativedelta(days=+1), 
-"1_Hour": relativedelta(hours=+1)
+# "1_Week": relativedelta(days=+7), 
+# "1_Day": relativedelta(days=+1), 
+# "1_Hour": relativedelta(hours=+1)
 }
 
 class supportResistanceEngine(object):
@@ -41,7 +41,19 @@ class supportResistanceEngine(object):
 
 if __name__ == "__main__":
     engine = supportResistanceEngine()
-    df = pd.read_csv("Binance_BTCUSDT_1h.csv", parse_dates=['timestamp'], index_col=['timestamp'])
+
+    #####DATASET SWITCHER#####
+    """Binance_BTCUSDT_1h.csv"""
+    # df = pd.read_csv("Binance_BTCUSDT_1h.csv", parse_dates=['timestamp'], index_col=['timestamp'])
+
+    """bitstamp_hourly.csv"""
+    # df = pd.read_csv('bitstamp_hourly.csv', index_col=['timestamp'])
+    df = pd.read_csv('bitstamp_hourly.csv') # read csv
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s') # convert UNIX to dateTime
+    df = df.set_index('timestamp') # set the index as timestamp
+    
+    #####END DATASET SWITCHER#####
+
     df["performance"] = engine.performance
 
     """Main loop"""
@@ -66,27 +78,60 @@ if __name__ == "__main__":
     ax[0].plot(df.index, df['high'], label = 'high')
     ax[0].plot(df.index, df['low'], label = 'low')
     ax[0].plot(df.index, df['close'], label = 'close')
-    
-    for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Year'].supportResistanceLevels.items():
-        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*1)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*1), df.index[-1:].to_pydatetime()[0])}")
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*1), color='red', label='Yearly')
+
+    firstYearlyLevel = None
+    firstMonthlyLevel = None
+    firstWeeklyLevel = None
+    firstDailyLevel = None
+    firstHourlyLevel = None
+
+    # plotIntervals = [firstYearlyLevel, firstMonthlyLevel, firstWeeklyLevel, firstDailyLevel, firstHourlyLevel]
+
+    # for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Year'].supportResistanceLevels.items():
+    #     # print(f"{SRLevel.startTime+(SRLevel.intervalLength*1)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*1), df.index[-1:].to_pydatetime()[0])}")
+    #     ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.endTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*1), color='black')
+    #     if not firstYearlyLevel:
+    #         firstYearlyLevel = SRLevel.endTime
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Month'].supportResistanceLevels.items():
         # print(f"{SRLevel.startTime+(SRLevel.intervalLength*8)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*8), df.index[-1:].to_pydatetime()[0])}")
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*8),df.index[-1:].to_pydatetime()[0]), color='orange', label='Monthly')
+        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.endTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*8),df.index[-1:].to_pydatetime()[0]), color='blue')
+        if not firstMonthlyLevel:
+            firstMonthlyLevel = SRLevel.endTime
 
-    for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Week'].supportResistanceLevels.items():
-        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*16)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*16), df.index[-1:].to_pydatetime()[0])}")
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*16),df.index[-1:].to_pydatetime()[0]), color='yellow', label='Weekly')
+    # for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Week'].supportResistanceLevels.items():
+    #     # print(f"{SRLevel.startTime+(SRLevel.intervalLength*16)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*16), df.index[-1:].to_pydatetime()[0])}")
+    #     ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.endTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*16),df.index[-1:].to_pydatetime()[0]), color='red')
+    #     if not firstWeeklyLevel:
+    #         firstWeeklyLevel = SRLevel.endTime
 
-    for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Day'].supportResistanceLevels.items():
-        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*64)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*64), df.index[-1:].to_pydatetime()[0])}")
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*64),df.index[-1:].to_pydatetime()[0]), color='green', label='Daily')
+    # for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Day'].supportResistanceLevels.items():
+    #     # print(f"{SRLevel.startTime+(SRLevel.intervalLength*64)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*64), df.index[-1:].to_pydatetime()[0])}")
+    #     ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.endTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*64),df.index[-1:].to_pydatetime()[0]), color='orange')
+    #     if not firstDailyLevel:
+    #         firstDailyLevel = SRLevel.endTime
 
-    for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Hour'].supportResistanceLevels.items():
-        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*512)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*512), df.index[-1:].to_pydatetime()[0])}")
-        ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*512),df.index[-1:].to_pydatetime()[0]), color='blue', label='Hourly')
+    # for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Hour'].supportResistanceLevels.items():
+    #     # print(f"{SRLevel.startTime+(SRLevel.intervalLength*512)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*512), df.index[-1:].to_pydatetime()[0])}")
+    #     ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.endTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*512),df.index[-1:].to_pydatetime()[0]), color='blue')
+    #     if not firstHourlyLevel:
+    #         firstHourlyLevel = SRLevel.endTime
 
+    # while firstYearlyLevel < df.index[-1:].to_pydatetime()[0]:
+    #     ax[0].axvline(x = firstYearlyLevel, alpha = 0.8)
+    #     firstYearlyLevel += relativedelta(years=+1)
+
+    while firstMonthlyLevel < df.index[-1:].to_pydatetime()[0]:
+        ax[0].axvline(x = firstMonthlyLevel, alpha = 0.6)
+        firstMonthlyLevel += relativedelta(months=+1)
+
+    # while firstWeeklyLevel < df.index[-1:].to_pydatetime()[0]:
+    #     ax[0].axvline(x = firstWeeklyLevel, alpha = 0.4)
+    #     firstWeeklyLevel += relativedelta(weeks=+1)
+
+    # while firstDailyLevel < df.index[-1:].to_pydatetime()[0]:
+    #     ax[0].axvline(x = firstDailyLevel, alpha = 0.2)
+    #     firstDailyLevel += relativedelta(days=+1)
 
     plt.xlabel("time")
     ax[0].legend()

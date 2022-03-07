@@ -24,9 +24,7 @@ class supportResistanceStrategy(object):
         return perf
 
     def timeframeIntialiser(self, time, priceOpen, priceHigh, priceLow, priceClose):
-        print('initialised')
         self.timeframe = timeframe(time, self.period, priceOpen, priceHigh, priceLow, priceClose)
-        print(self.timeframe.__dict__)
 
     def priceWatcher(self, priceHigh, priceLow):
         if priceLow < self.timeframe.priceLow:
@@ -49,13 +47,9 @@ class supportResistanceStrategy(object):
 
     def theMechanism(self, priceOpen, priceHigh, priceLow, priceClose):
         combinedOutput = 1
-        for levelName, level in self.supportResistanceLevels.items(): #
-            # from below
-            if priceOpen > level.priceClose and priceLow < level.priceClose:
-                print(pct_change(level.priceClose, priceClose), level.priceClose, priceClose)
-                combinedOutput += pct_change(level.priceClose, priceClose) #somethings wrong when flipping
-            # from above
-            if priceOpen < level.priceClose and priceHigh > level.priceClose:
-                print(-pct_change(level.priceClose, priceClose), level.priceClose, priceClose)
-                combinedOutput -= pct_change(level.priceClose, priceClose) #the polarity of these lines doesn't invert the performance
+        for levelName, level in self.supportResistanceLevels.items():
+            if priceOpen < level.priceClose and priceHigh > level.priceClose: # from below
+                combinedOutput -= 0.1*pct_change(level.priceClose, priceClose) #      somethings wrong?,  when flipping
+            if priceOpen > level.priceClose and priceLow < level.priceClose: # from above
+                combinedOutput += 0.1*pct_change(level.priceClose, priceClose) #      the polarity of these lines doesn't invert the performance....?
         return combinedOutput
