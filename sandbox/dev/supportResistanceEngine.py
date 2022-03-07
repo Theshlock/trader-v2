@@ -21,43 +21,41 @@ class supportResistanceEngine(object):
         self.supportResistanceStrategies = {}
         for intervalName in intervals:
             self.supportResistanceStrategies[intervalName] = supportResistanceStrategy(intervals[intervalName])
-        self.performance = 1
+        self.performance = 1000
         self.initialised = False
 
     def timeframeInitialiser(self, time, priceOpen, priceHigh, priceLow, priceClose):
         for strategy in self.supportResistanceStrategies:
-            self.supportResistanceStrategies[strategy].levelsOHLCFeeder(time, priceOpen, priceHigh, priceLow, priceClose)
+            self.supportResistanceStrategies[strategy].OHLCFeeder(time, priceOpen, priceHigh, priceLow, priceClose)
     
-    def strategiesOHLCFeeder(self, time, priceOpen, priceHigh, priceLow, priceClose):
-        print(time)
+    def OHLCFeeder(self, time, priceOpen, priceHigh, priceLow, priceClose):
         if self.initialised == False:
             self.timeframeInitialiser(time, priceOpen, priceHigh, priceLow, priceClose)
             self.initialised = True
         else:
             for strategy in self.supportResistanceStrategies:
-                self.supportResistanceStrategies[strategy].levelsOHLCFeeder(time, priceOpen, priceHigh, priceLow, priceClose)
+                # print('perf', self.supportResistanceStrategies[strategy].OHLCFeeder(time, priceOpen, priceHigh, priceLow, priceClose))
+                self.performance *= self.supportResistanceStrategies[strategy].OHLCFeeder(time, priceOpen, priceHigh, priceLow, priceClose)
+            # input("next? ")
 
 
 if __name__ == "__main__":
     engine = supportResistanceEngine()
     df = pd.read_csv("Binance_BTCUSDT_1h.csv", parse_dates=['timestamp'], index_col=['timestamp'])
-    print(df.info)
-
-    """Prepare the dataframe with indicators/outputs"""
     df["performance"] = engine.performance
 
     """Main loop"""
     active_trade = None
-    capital = 1000
     for k, row in df.iterrows():
-        engine.strategiesOHLCFeeder(k, row['open'], row['high'], row['low'], row['close'])
+        engine.OHLCFeeder(k, row['open'], row['high'], row['low'], row['close'])
         df.loc[k, 'performance'] = engine.performance
-        # print(row)
+        print(engine.performance)
+        # input("next?")
  
     """Output section"""
     print(df)
-    # print(df.index)
-    print(df.index[-1:].to_pydatetime()[0])
+
+    # print(df.index[-1:].to_pydatetime()[0])
 
     """Matplotlib config"""
     fig = plt.figure()
@@ -70,23 +68,23 @@ if __name__ == "__main__":
     ax[0].plot(df.index, df['close'], label = 'close')
     
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Year'].supportResistanceLevels.items():
-        print(f"{SRLevel.startTime+(SRLevel.intervalLength*1)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*1), df.index[-1:].to_pydatetime()[0])}")
+        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*1)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*1), df.index[-1:].to_pydatetime()[0])}")
         ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=SRLevel.startTime+(SRLevel.intervalLength*1), color='red', label='Yearly')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Month'].supportResistanceLevels.items():
-        print(f"{SRLevel.startTime+(SRLevel.intervalLength*8)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*8), df.index[-1:].to_pydatetime()[0])}")
+        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*8)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*8), df.index[-1:].to_pydatetime()[0])}")
         ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*8),df.index[-1:].to_pydatetime()[0]), color='orange', label='Monthly')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Week'].supportResistanceLevels.items():
-        print(f"{SRLevel.startTime+(SRLevel.intervalLength*16)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*16), df.index[-1:].to_pydatetime()[0])}")
+        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*16)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*16), df.index[-1:].to_pydatetime()[0])}")
         ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*16),df.index[-1:].to_pydatetime()[0]), color='yellow', label='Weekly')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Day'].supportResistanceLevels.items():
-        print(f"{SRLevel.startTime+(SRLevel.intervalLength*64)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*64), df.index[-1:].to_pydatetime()[0])}")
+        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*64)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*64), df.index[-1:].to_pydatetime()[0])}")
         ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*64),df.index[-1:].to_pydatetime()[0]), color='green', label='Daily')
 
     for SRLevelName, SRLevel in engine.supportResistanceStrategies['1_Hour'].supportResistanceLevels.items():
-        print(f"{SRLevel.startTime+(SRLevel.intervalLength*512)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*512), df.index[-1:].to_pydatetime()[0])}")
+        # print(f"{SRLevel.startTime+(SRLevel.intervalLength*512)}, {df.index[-1:].to_pydatetime()[0]}, {min(SRLevel.startTime+(SRLevel.intervalLength*512), df.index[-1:].to_pydatetime()[0])}")
         ax[0].hlines(y=SRLevel.priceClose, xmin=SRLevel.startTime, xmax=min(SRLevel.startTime+(SRLevel.intervalLength*512),df.index[-1:].to_pydatetime()[0]), color='blue', label='Hourly')
 
 
